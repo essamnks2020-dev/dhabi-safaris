@@ -361,7 +361,7 @@ h1, h2, h3, h4 {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
-  min-height: -webkit-fill-available;
+  min-height: 100dvh;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -1393,9 +1393,9 @@ footer small {
     top: max(20px, env(safe-area-inset-top));
   }
   .hero {
+    min-height: 100vh;
     min-height: 100svh;
     min-height: 100dvh;
-    min-height: -webkit-fill-available;
   }
   .circuit,
   .fleet,
