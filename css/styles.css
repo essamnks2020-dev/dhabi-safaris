@@ -33,6 +33,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   overscroll-behavior-y: none;
+  overflow-x: clip;
 }
 
 body {
@@ -40,7 +41,7 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: 1.65;
-  overflow-x: hidden;
+  overflow-x: clip;
   cursor: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -373,6 +374,7 @@ h1, h2, h3, h4 {
 .hero-slides {
   position: absolute;
   inset: 0;
+  overflow: hidden;
 }
 
 .hero-slides picture,
@@ -406,10 +408,19 @@ h1, h2, h3, h4 {
   height: 100%;
   object-fit: cover;
   opacity: 0;
+  transform: scale(1.04);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .hero-slides img.is-active {
   opacity: 1;
+  animation: hero-drift 36s ease-out forwards;
+}
+
+@keyframes hero-drift {
+  from { transform: scale(1.04) translate3d(0, 0, 0); }
+  to { transform: scale(1.12) translate3d(-1.8%, -1.2%, 0); }
 }
 
 .hero-veil {
@@ -652,6 +663,8 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .statement-visual figcaption {
@@ -729,6 +742,8 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .about-frame .caption {
@@ -780,7 +795,7 @@ h1, h2, h3, h4 {
 .circuit {
   background: var(--ink);
   padding: 0;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .circuit-head {
@@ -804,17 +819,28 @@ h1, h2, h3, h4 {
   height: 100vh;
 }
 
+.circuit-pin::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(16, 16, 14, 0.55) 0%, transparent 7%, transparent 93%, rgba(16, 16, 14, 0.55) 100%);
+}
+
 .circuit-track {
   display: flex;
   height: 100%;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .park {
   position: relative;
-  flex: 0 0 78vw;
+  flex: 0 0 min(86vw, 1240px);
   height: 100%;
   overflow: hidden;
-  margin-right: 2vw;
+  margin-right: 1.1vw;
   background: var(--char);
 }
 
@@ -826,6 +852,9 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.08);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .park-veil {
@@ -954,6 +983,8 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .quote-veil {
@@ -1169,6 +1200,13 @@ footer small {
     overflow: auto;
   }
   .nav {
+    transform: none;
+  }
+  .hero-slides img.is-active {
+    animation: none;
+    transform: none;
+  }
+  .park img {
     transform: none;
   }
   .marquee-track {

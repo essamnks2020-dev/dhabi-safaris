@@ -138,6 +138,23 @@
       scrollTrigger: { trigger: ".quote", start: "top 75%", once: true },
     });
 
+    gsap.utils.toArray(".statement-visual img, .about-frame img, .quote img").forEach((img) => {
+      gsap.fromTo(
+        img,
+        { scale: 1.1 },
+        {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: img.closest("figure, .about-frame, .quote") || img,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.15,
+          },
+        }
+      );
+    });
+
     document.querySelectorAll(".stat b").forEach((el) => {
       const raw = el.textContent.trim();
       const num = parseFloat(raw);
@@ -164,22 +181,68 @@
   const circuit = () => {
     const pin = document.querySelector(".circuit-pin");
     const track = document.querySelector(".circuit-track");
-    if (!pin || !track || light || innerWidth < 981 || typeof gsap === "undefined") return;
+    const parks = gsap.utils.toArray(".park");
+    if (!pin || !track || parks.length < 2 || light || innerWidth < 981 || typeof gsap === "undefined") return;
 
-    const distance = () => Math.max(0, track.scrollWidth - innerWidth);
+    const steps = parks.length - 1;
 
-    gsap.to(track, {
-      x: () => Math.min(0, innerWidth - track.scrollWidth),
-      ease: "none",
+    gsap.set(track, { force3D: true, x: 0 });
+    parks.forEach((park) => {
+      const img = park.querySelector("img");
+      if (img) gsap.set(img, { scale: 1.08, transformOrigin: "50% 45%" });
+    });
+
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
       scrollTrigger: {
         trigger: pin,
         pin: true,
-        scrub: true,
+        anticipatePin: 1,
+        scrub: 1.25,
+        snap: {
+          snapTo: "labelsDirectional",
+          duration: { min: 0.45, max: 0.8 },
+          delay: 0.06,
+          ease: "power2.inOut",
+        },
         invalidateOnRefresh: true,
-        fastScrollEnd: true,
-        end: () => `+=${distance()}`,
+        start: "top top",
+        end: () => `+=${Math.max(innerHeight * 2.2, steps * innerHeight * 0.92)}`,
       },
     });
+
+    parks.forEach((park, i) => {
+      tl.addLabel("park" + i);
+      const img = park.querySelector("img");
+      if (i === 0) {
+        tl.to({}, { duration: 0.2 });
+        if (img) tl.to(img, { scale: 1, duration: 0.7 });
+        return;
+      }
+      tl.to(track, {
+        x: () => Math.min(0, innerWidth * 0.05 - park.offsetLeft),
+        duration: 1,
+      });
+      if (img) tl.to(img, { scale: 1, duration: 0.7 }, "<");
+    });
+    tl.to({}, { duration: 0.2 });
+  };
+
+  const warmCircuitImages = () => {
+    const section = document.querySelector(".circuit");
+    if (!section) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        section.querySelectorAll("img").forEach((img) => {
+          img.loading = "eager";
+          if (img.dataset.src) img.src = img.dataset.src;
+        });
+        io.disconnect();
+      },
+      { rootMargin: "600px 0px" }
+    );
+    io.observe(section);
   };
 
   const chrome = () => {
@@ -236,6 +299,7 @@
   chrome();
   smooth();
   progress();
+  warmCircuitImages();
 
   const boot = async () => {
     finishLoader();
