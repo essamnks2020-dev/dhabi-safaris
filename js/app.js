@@ -138,18 +138,18 @@
       scrollTrigger: { trigger: ".quote", start: "top 75%", once: true },
     });
 
-    gsap.utils.toArray(".statement-visual img, .about-frame img, .quote img").forEach((img) => {
+    gsap.utils.toArray(".statement-visual img, .about-frame img, .quote img, .contact-panel img").forEach((img) => {
       gsap.fromTo(
         img,
-        { scale: 1.1 },
+        { scale: 1.12 },
         {
           scale: 1,
           ease: "none",
           scrollTrigger: {
-            trigger: img.closest("figure, .about-frame, .quote") || img,
+            trigger: img.closest("figure, .about-frame, .quote, .contact-panel") || img,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1.15,
+            scrub: 1.2,
           },
         }
       );
@@ -185,12 +185,19 @@
     if (!pin || !track || parks.length < 2 || light || innerWidth < 981 || typeof gsap === "undefined") return;
 
     const steps = parks.length - 1;
+    const stepEl = document.getElementById("circuitStep");
+    const setStep = (i) => {
+      if (stepEl) stepEl.textContent = String(i + 1).padStart(2, "0");
+    };
 
     gsap.set(track, { force3D: true, x: 0 });
-    parks.forEach((park) => {
+    parks.forEach((park, i) => {
       const img = park.querySelector("img");
-      if (img) gsap.set(img, { scale: 1.08, transformOrigin: "50% 45%" });
+      const copy = park.querySelector(".park-copy");
+      if (img) gsap.set(img, { scale: 1.1, transformOrigin: "50% 45%" });
+      if (copy) gsap.set(copy, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 28 });
     });
+    setStep(0);
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
@@ -201,31 +208,36 @@
         scrub: 1.25,
         snap: {
           snapTo: "labelsDirectional",
-          duration: { min: 0.45, max: 0.8 },
-          delay: 0.06,
+          duration: { min: 0.5, max: 0.9 },
+          delay: 0.05,
           ease: "power2.inOut",
         },
         invalidateOnRefresh: true,
         start: "top top",
-        end: () => `+=${Math.max(innerHeight * 2.2, steps * innerHeight * 0.92)}`,
+        end: () => `+=${Math.max(innerHeight * 2.6, steps * innerHeight)}`,
+        onUpdate: (self) => setStep(Math.round(self.progress * steps)),
       },
     });
 
     parks.forEach((park, i) => {
       tl.addLabel("park" + i);
       const img = park.querySelector("img");
+      const copy = park.querySelector(".park-copy");
       if (i === 0) {
-        tl.to({}, { duration: 0.2 });
-        if (img) tl.to(img, { scale: 1, duration: 0.7 });
+        tl.to({}, { duration: 0.28 });
+        if (img) tl.to(img, { scale: 1, duration: 0.8 });
         return;
       }
+      const prevCopy = parks[i - 1].querySelector(".park-copy");
       tl.to(track, {
-        x: () => Math.min(0, innerWidth * 0.05 - park.offsetLeft),
+        x: () => Math.min(0, innerWidth * 0.08 - park.offsetLeft),
         duration: 1,
       });
-      if (img) tl.to(img, { scale: 1, duration: 0.7 }, "<");
+      if (prevCopy) tl.to(prevCopy, { opacity: 0, y: -16, duration: 0.45 }, "<");
+      if (copy) tl.to(copy, { opacity: 1, y: 0, duration: 0.55 }, "<+=0.2");
+      if (img) tl.to(img, { scale: 1, duration: 0.8 }, "<");
     });
-    tl.to({}, { duration: 0.2 });
+    tl.to({}, { duration: 0.28 });
   };
 
   const warmCircuitImages = () => {
@@ -283,6 +295,7 @@
     const lightZones = [...document.querySelectorAll(".about, .fleet, .contact-form")];
     if (!navEl) return;
     const y = 36;
+    navEl.classList.toggle("is-scrolled", window.scrollY > 40);
     navEl.classList.toggle(
       "on-light",
       lightZones.some((el) => {
