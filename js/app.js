@@ -6,12 +6,34 @@
   const loader = document.getElementById("loader");
 
   const finishLoader = () => {
-    if (!loader) return;
-    loader.style.pointerEvents = "none";
-    loader.style.display = "none";
     document.body.classList.add("is-ready");
-    const nav = document.querySelector(".nav");
-    if (nav) nav.style.transform = "translateY(0)";
+    if (!loader) return;
+    loader.classList.remove("is-waiting");
+    loader.classList.add("is-done");
+  };
+
+  const waitForHero = () => {
+    const hero = document.querySelector(".hero-slides img");
+    const hardStop = window.setTimeout(finishLoader, 1000);
+
+    const done = () => {
+      window.clearTimeout(hardStop);
+      finishLoader();
+    };
+
+    if (!hero) {
+      done();
+      return;
+    }
+
+    if (hero.complete && hero.naturalWidth > 0) {
+      done();
+      return;
+    }
+
+    loader?.classList.add("is-waiting");
+    hero.addEventListener("load", done, { once: true });
+    hero.addEventListener("error", done, { once: true });
   };
 
   let scrollLockY = 0;
@@ -240,21 +262,78 @@
     tl.to({}, { duration: 0.28 });
   };
 
-  const warmCircuitImages = () => {
-    const section = document.querySelector(".circuit");
-    if (!section) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        section.querySelectorAll("img").forEach((img) => {
-          img.loading = "eager";
-          if (img.dataset.src) img.src = img.dataset.src;
-        });
-        io.disconnect();
-      },
-      { rootMargin: "600px 0px" }
-    );
-    io.observe(section);
+  const warmUpcoming = () => {
+    const desktop = window.matchMedia("(min-width: 981px)").matches;
+
+    const eagerize = (img) => {
+      if (!img) return;
+      img.loading = "eager";
+    };
+
+    const whenNear = (el, margin, onHit) => {
+      if (!el) return;
+      if (!("IntersectionObserver" in window)) {
+        onHit();
+        return;
+      }
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          onHit();
+          io.disconnect();
+        },
+        { rootMargin: margin }
+      );
+      io.observe(el);
+    };
+
+    document.querySelectorAll("main img").forEach((img) => {
+      if (img.closest(".hero-slides")) return;
+      const show = () => img.classList.remove("is-pending");
+      if (img.complete && img.naturalWidth > 0) {
+        show();
+        return;
+      }
+      img.classList.add("is-pending");
+      img.addEventListener("load", show, { once: true });
+      img.addEventListener("error", show, { once: true });
+    });
+
+    whenNear(document.querySelector(".statement"), "80% 0px", () => {
+      eagerize(document.querySelector(".statement-visual img"));
+    });
+
+    whenNear(document.querySelector(".circuit"), "1100px 0px", () => {
+      document.querySelectorAll(".park img").forEach((img, i) => {
+        if (i < 2) eagerize(img);
+      });
+    });
+
+    whenNear(document.querySelector(".about"), "800px 0px", () => {
+      eagerize(document.querySelector(".about-frame img"));
+    });
+
+    whenNear(document.querySelector(".fleet"), "800px 0px", () => {
+      document.querySelectorAll(".fleet-card img").forEach(eagerize);
+    });
+
+    document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
+      whenNear(img, "900px 0px", () => eagerize(img));
+    });
+
+    const afterHero = () => {
+      const statement = document.querySelector(".statement-visual img");
+      if (!statement) return;
+      const src = desktop
+        ? "assets/images/statement.webp"
+        : "assets/images/statement-sm.webp";
+      const pre = new Image();
+      pre.src = src;
+    };
+
+    const hero = document.querySelector(".hero-slides img");
+    if (hero && hero.complete) afterHero();
+    else hero?.addEventListener("load", afterHero, { once: true });
   };
 
   const chrome = () => {
@@ -312,10 +391,10 @@
   chrome();
   smooth();
   progress();
-  warmCircuitImages();
+  warmUpcoming();
 
   const boot = async () => {
-    finishLoader();
+    waitForHero();
     tintNav();
     if (light) return;
 

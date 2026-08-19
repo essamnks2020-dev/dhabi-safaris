@@ -26,15 +26,7 @@
   <div class="cursor" aria-hidden="true"><span></span></div>
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
-
-  <div class="loader" id="loader">
-    <div class="loader-inner">
-      <div class="loader-word"><span>Dhabi</span></div>
-      <div class="loader-sub">Safaris &amp; Holidays</div>
-      <div class="loader-bar"><i></i></div>
-      <div class="loader-pct">00</div>
-    </div>
-  </div>
+  <div class="boot-bar" id="loader" aria-hidden="true"><i></i></div>
 
   <header class="nav">
     <a class="brand" href="#top">Dhabi <em>Safaris</em></a>
@@ -63,8 +55,8 @@
     <section class="hero">
       <div class="hero-slides">
         <picture>
-          <source media="(max-width: 980px)" srcset="assets/images/hero-1-sm.webp" type="image/webp">
-          <img class="is-active" src="assets/images/hero-1.webp" alt="Acacia tree at first light on the Tanzanian savanna" width="1600" height="1066" fetchpriority="high" decoding="async">
+          <source media="(min-width: 981px)" srcset="assets/images/hero-1.webp" type="image/webp">
+          <img class="is-active" src="assets/images/hero-1-sm.webp" alt="Acacia tree at first light on the Tanzanian savanna" width="1600" height="1066" fetchpriority="high" decoding="sync">
         </picture>
       </div>
       <div class="hero-veil"></div>
@@ -105,8 +97,8 @@
       </div>
       <figure class="statement-visual">
         <picture>
-          <source media="(max-width: 980px)" srcset="assets/images/statement-sm.webp" type="image/webp">
-          <img src="assets/images/statement.webp" alt="Hot air balloons lifting over the Serengeti at sunrise" width="1100" height="736" decoding="async">
+          <source media="(min-width: 981px)" srcset="assets/images/statement.webp" type="image/webp">
+          <img src="assets/images/statement-sm.webp" alt="Hot air balloons lifting over the Serengeti at sunrise" width="1100" height="736" loading="lazy" decoding="async">
         </picture>
         <figcaption>Northern Circuit · Tanzania</figcaption>
       </figure>
@@ -131,8 +123,8 @@
       <div class="about-frame">
         <div class="frame">
           <picture>
-            <source media="(max-width: 980px)" srcset="assets/images/about-sm.webp" type="image/webp">
-            <img src="assets/images/about.webp" alt="Lion at rest in golden light" width="1100" height="734" loading="lazy" decoding="async">
+            <source media="(min-width: 981px)" srcset="assets/images/about.webp" type="image/webp">
+            <img src="assets/images/about-sm.webp" alt="Lion at rest in golden light" width="1100" height="734" loading="lazy" decoding="async">
           </picture>
         </div>
         <div class="caption">
@@ -163,8 +155,8 @@
         <div class="circuit-track">
           <article class="park">
             <picture>
-              <source media="(max-width: 980px)" srcset="assets/images/serengeti-sm.webp" type="image/webp">
-              <img src="assets/images/serengeti.webp" alt="Zebras on the Serengeti plains" width="1400" height="933" decoding="async">
+              <source media="(min-width: 981px)" srcset="assets/images/serengeti.webp" type="image/webp">
+              <img src="assets/images/serengeti-sm.webp" alt="Zebras on the Serengeti plains" width="1400" height="933" loading="lazy" decoding="async">
             </picture>
             <div class="park-veil"></div>
             <div class="park-copy">
@@ -176,8 +168,8 @@
           </article>
           <article class="park">
             <picture>
-              <source media="(max-width: 980px)" srcset="assets/images/ngorongoro-sm.webp" type="image/webp">
-              <img src="assets/images/ngorongoro.webp" alt="Rift landscape approaching Ngorongoro" width="1400" height="935" loading="lazy" decoding="async">
+              <source media="(min-width: 981px)" srcset="assets/images/ngorongoro.webp" type="image/webp">
+              <img src="assets/images/ngorongoro-sm.webp" alt="Rift landscape approaching Ngorongoro" width="1400" height="935" loading="lazy" decoding="async">
             </picture>
             <div class="park-veil"></div>
             <div class="park-copy">
@@ -189,8 +181,8 @@
           </article>
           <article class="park">
             <picture>
-              <source media="(max-width: 980px)" srcset="assets/images/tarangire-sm.webp" type="image/webp">
-              <img src="assets/images/tarangire.webp" alt="Elephants walking through Tarangire" width="1400" height="1101" loading="lazy" decoding="async">
+              <source media="(min-width: 981px)" srcset="assets/images/tarangire.webp" type="image/webp">
+              <img src="assets/images/tarangire-sm.webp" alt="Elephants walking through Tarangire" width="1400" height="1101" loading="lazy" decoding="async">
             </picture>
             <div class="park-veil"></div>
             <div class="park-copy">
@@ -202,8 +194,8 @@
           </article>
           <article class="park">
             <picture>
-              <source media="(max-width: 980px)" srcset="assets/images/manyara-sm.webp" type="image/webp">
-              <img src="assets/images/manyara.webp" alt="Flamingos along a soda lake" width="1200" height="1200" loading="lazy" decoding="async">
+              <source media="(min-width: 981px)" srcset="assets/images/manyara.webp" type="image/webp">
+              <img src="assets/images/manyara-sm.webp" alt="Flamingos along a soda lake" width="1200" height="1200" loading="lazy" decoding="async">
             </picture>
             <div class="park-veil"></div>
             <div class="park-copy">
@@ -231,8 +223,8 @@
       <div class="fleet-grid">
         <article class="fleet-card" data-hover>
           <picture>
-            <source media="(max-width: 980px)" srcset="assets/images/fleet-1-sm.webp" type="image/webp">
-            <img src="assets/images/fleet-1.webp" alt="Safari camp light at dusk" width="1000" height="667" loading="lazy" decoding="async">
+            <source media="(min-width: 981px)" srcset="assets/images/fleet-1.webp" type="image/webp">
+            <img src="assets/images/fleet-1-sm.webp" alt="Safari camp light at dusk" width="1000" height="667" loading="lazy" decoding="async">
           </picture>
           <div class="body">
             <h3>4×4 pop-top vehicles</h3>
@@ -241,8 +233,8 @@
         </article>
         <article class="fleet-card" data-hover>
           <picture>
-            <source media="(max-width: 980px)" srcset="assets/images/fleet-2-sm.webp" type="image/webp">
-            <img src="assets/images/fleet-2.webp" alt="Open Tanzanian landscape on a game-drive route" width="545" height="900" loading="lazy" decoding="async">
+            <source media="(min-width: 981px)" srcset="assets/images/fleet-2.webp" type="image/webp">
+            <img src="assets/images/fleet-2-sm.webp" alt="Open Tanzanian landscape on a game-drive route" width="545" height="900" loading="lazy" decoding="async">
           </picture>
           <div class="body">
             <h3>Guided at your pace</h3>
@@ -251,8 +243,8 @@
         </article>
         <article class="fleet-card" data-hover>
           <picture>
-            <source media="(max-width: 980px)" srcset="assets/images/fleet-3-sm.webp" type="image/webp">
-            <img src="assets/images/fleet-3.webp" alt="Quiet hour on safari" width="1000" height="690" loading="lazy" decoding="async">
+            <source media="(min-width: 981px)" srcset="assets/images/fleet-3.webp" type="image/webp">
+            <img src="assets/images/fleet-3-sm.webp" alt="Quiet hour on safari" width="1000" height="690" loading="lazy" decoding="async">
           </picture>
           <div class="body">
             <h3>Serviced between trips</h3>
@@ -264,8 +256,8 @@
 
     <section class="quote">
       <picture>
-        <source media="(max-width: 980px)" srcset="assets/images/quote-sm.webp" type="image/webp">
-        <img src="assets/images/quote.webp" alt="Golden hour over the savanna" width="800" height="1200" loading="lazy" decoding="async">
+        <source media="(min-width: 981px)" srcset="assets/images/quote.webp" type="image/webp">
+        <img src="assets/images/quote-sm.webp" alt="Golden hour over the savanna" width="800" height="1200" loading="lazy" decoding="async">
       </picture>
       <div class="quote-veil"></div>
       <div>
@@ -277,8 +269,8 @@
     <section class="contact" id="contact">
       <div class="contact-panel">
         <picture>
-          <source media="(max-width: 980px)" srcset="assets/images/contact-sm.webp" type="image/webp">
-          <img src="assets/images/contact.webp" alt="Rift escarpment and open sky" width="600" height="900" loading="lazy" decoding="async">
+          <source media="(min-width: 981px)" srcset="assets/images/contact.webp" type="image/webp">
+          <img src="assets/images/contact-sm.webp" alt="Rift escarpment and open sky" width="600" height="900" loading="lazy" decoding="async">
         </picture>
         <div class="inner">
           <p class="eyebrow">Get in touch</p>
@@ -344,7 +336,7 @@
   <script src="js/app.js" defer></script>
   <noscript>
     <style>
-      .loader { display: none !important; }
+      .boot-bar { display: none !important; }
       .nav { transform: none !important; }
     </style>
   </noscript>
